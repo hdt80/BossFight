@@ -34,8 +34,6 @@ BossFight is a Spigot plugin developed to help me run custom boss fights for my 
      
 - Figure out a way to make the fighters glow for the boss, and the boss glow for the fighters
 
-- Impelement a way to store custom items
-
 - Display proper death messages when doing automatic respawning
 
 ### Depenencies:
