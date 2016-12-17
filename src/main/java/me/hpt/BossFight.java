@@ -3,6 +3,9 @@ package me.hpt;
 import com.sk89q.bukkit.util.CommandsManagerRegistration;
 import com.sk89q.minecraft.util.commands.*;
 import me.hpt.Commands.BossParentCommand;
+import me.hpt.Commands.ItemParentCommand;
+import me.hpt.ItemStorage.ItemInventory;
+import me.hpt.ItemStorage.ItemInventoryLoader;
 import me.hpt.Listeners.BossHitListener;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -18,17 +21,21 @@ public class BossFight extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		instance = this;
+
 		Logger.setLogger(getLogger());
 		registerCommands();
 
-		new BossHitListener(this);
+		Config.load(this);
 
-		Logger.broadcast("Enabled!");
+		ItemInventory.setInventories(ItemInventoryLoader.loadInventories(Config.get()));
+
+		new BossHitListener(this);
 	}
 
 	@Override
 	public void onDisable() {
-		BossBar bar = null;
+		// Clear the BossBars from all the players
+		BossBar bar;
 		for (Player p : getServer().getOnlinePlayers()) {
 			bar = BossBar.getBossBar(p);
 
@@ -36,6 +43,11 @@ public class BossFight extends JavaPlugin {
 				bar.removePlayer(p);
 			}
 		}
+
+		ItemInventoryLoader.saveInventories(Config.get(), ItemInventory.getInventories());
+
+		// Save the config file
+		Config.save();
 	}
 
 	public static BossFight get() {
@@ -60,6 +72,7 @@ public class BossFight extends JavaPlugin {
 		CommandsManagerRegistration cmdRegister = new CommandsManagerRegistration(this, commands);
 
 		cmdRegister.register(BossParentCommand.class);
+		cmdRegister.register(ItemParentCommand.class);
 	}
 
 	@Override
