@@ -1,10 +1,9 @@
 package me.hpt.Listeners;
 
 import com.connorlinfoot.titleapi.TitleAPI;
-import me.hpt.BossFightManager;
 import me.hpt.BossFight;
+import me.hpt.BossFightManager;
 import me.hpt.Runnables.RespawnRunnable;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -100,15 +99,13 @@ public class BossHitListener implements Listener {
 		if (p.getHealth() - e.getFinalDamage() <= 0) {
 			e.setCancelled(true);
 
-			Bukkit.broadcastMessage(e.getCause().toString());
-
 			p.setGameMode(GameMode.SPECTATOR);
 
-			int respawnTime = 100; // In ticks
+			int respawnTime = 5 * 20; // In ticks
 
 			new RespawnRunnable(p, BossFightManager.getRespawnLocation()).runTaskLater(BossFight.get(), respawnTime);
 
-			TitleAPI.sendTitle(p, 5, respawnTime - 10, 5, ChatColor.RED + "You died!", ChatColor.RED + "3 seconds to respawn");
+			TitleAPI.sendTitle(p, 5, respawnTime - 10, 5, ChatColor.RED + "You died!", ChatColor.RED + "5 seconds to respawn");
 		}
 
 		BossFightManager.updateFighterInfo(p, p.getHealth() - e.getFinalDamage());

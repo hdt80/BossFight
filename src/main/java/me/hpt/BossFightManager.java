@@ -103,6 +103,7 @@ public class BossFightManager {
 		trackedPlayers.clear();
 
 		// Reset for the next fight
+		// Don't reset the respawnLocation, some people still might be respawning
 		playerBoss = null;
 		started = false;
 	}
