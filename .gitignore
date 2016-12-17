@@ -1,3 +1,5 @@
+### Java files ###
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -10,3 +12,15 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+### IntelliJ files ###
+
+.idea
+*.iml
+/out/
+.idea_module
+
+### Maven files ###
+
+/target/
+dependency-reduced-pom.xml
