@@ -1,6 +1,7 @@
 package me.hpt.ItemStorage;
 
 import me.hpt.Logger;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -64,7 +65,6 @@ public class ItemInventoryLoader {
 		// What slot the item goes into is located at key.ITEMS_SLOT_KEY
 		// What the item is, is found at key.ITEM_ITEM_KEY
 		for (String s : itemSection.getKeys(false)) {
-			Logger.info("key: %s", s);
 			inv.setItem(itemSection.getItemStack(s + '.' + ITEMS_ITEM_KEY),
 					itemSection.getInt(s + '.' + ITEMS_SLOT_KEY));
 		}
@@ -89,7 +89,14 @@ public class ItemInventoryLoader {
 		return invs;
 	}
 
+	/**
+	 * Save ItemInventories to a config file
+	 * @param config Config file to save to. The INV_KEY will be used
+	 * @param invs Map of ItemInventories to save. The key being the iternal name to store the ItemInventory under
+	 */
 	public static void saveInventories(FileConfiguration config, Map<String, ItemInventory> invs) {
+
+		// Section of the config we're writing all the ItemInventories to
 		ConfigurationSection invSection;
 		if (config.contains(INV_KEY) && config.isConfigurationSection(INV_KEY)) {
 			invSection = config.getConfigurationSection(INV_KEY);
@@ -97,6 +104,7 @@ public class ItemInventoryLoader {
 			invSection = config.createSection(INV_KEY);
 		}
 
+		// For each entry
 		for (Map.Entry<String, ItemInventory> entry : invs.entrySet()) {
 			// Set up the configSection that will store the ItemInventory
 			if (invSection.contains(entry.getKey())) {
@@ -110,6 +118,7 @@ public class ItemInventoryLoader {
 			// Section used to store the ItemInventory in the Entry
 			ConfigurationSection section = invSection.getConfigurationSection(entry.getKey());
 
+			// Set the display name
 			section.set(NAME_KEY, entry.getValue().getDisplayName());
 
 			/*
@@ -124,7 +133,7 @@ public class ItemInventoryLoader {
 			// Save the items in the ItemInventory
 			int index = 0;
 			for (int i = 0; i < entry.getValue().getItems().size(); ++i) {
-				if (entry.getValue().getItems().get(i) != ItemInventory.EMPTY_ITEM) {
+				if (entry.getValue().getItems().get(i).getType() != Material.AIR) {
 					ConfigurationSection itemSubSection = itemSection.createSection(String.valueOf(index++));
 					itemSubSection.set(ITEMS_SLOT_KEY, i);
 					itemSubSection.set(ITEMS_ITEM_KEY, entry.getValue().getItems().get(i));

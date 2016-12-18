@@ -5,7 +5,7 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import me.hpt.BossFightManager;
-import me.hpt.Logger;
+import me.hpt.Messages;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -22,7 +22,7 @@ public class BossCommands {
 	@CommandPermissions("bossfight.fight.start")
 	public static void startBossBar(final CommandContext args, final CommandSender sender) throws CommandException {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("Must be a player to use this command!");
+			sender.sendMessage(Messages.get("Command-PlayersOnly"));
 			return;
 		}
 
@@ -30,11 +30,9 @@ public class BossCommands {
 		int health = args.getInteger(0);
 
 		if (health < 1) {
-			sender.sendMessage("Health must be at least 1");
+			sender.sendMessage(Messages.get("Command-HealthGreaterThanOne"));
 			return;
 		}
-
-		Logger.info("User: %s, health: %d", user, health);
 
 		BossFightManager.startFight(user, health);
 	}
@@ -85,7 +83,7 @@ public class BossCommands {
 	@CommandPermissions("bossfight.fight.fly")
 	public static void fly(final CommandContext args, final CommandSender sender) throws CommandException {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("Can only be a pleyer to use this!");
+			sender.sendMessage(Messages.get("Command-PlayersOnly"));
 			return;
 		}
 
@@ -93,7 +91,7 @@ public class BossCommands {
 
 		user.setAllowFlight(!user.getAllowFlight());
 
-		user.sendMessage("Flight: " + user.getAllowFlight());
+		user.sendMessage(Messages.get("Command-BossFly", user.getAllowFlight()));
 	}
 
 	@Command(

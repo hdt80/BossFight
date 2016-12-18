@@ -7,9 +7,10 @@ import me.hpt.Commands.ItemParentCommand;
 import me.hpt.ItemStorage.ItemInventory;
 import me.hpt.ItemStorage.ItemInventoryLoader;
 import me.hpt.Listeners.BossHitListener;
+import me.hpt.Listeners.PlayerLifeListener;
+import me.hpt.Listeners.PlayerTrackingListener;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class BossFight extends JavaPlugin {
@@ -27,23 +28,22 @@ public class BossFight extends JavaPlugin {
 
 		Config.load(this);
 
+		Messages.load(this, "Messages.lang");
+
 		ItemInventory.setInventories(ItemInventoryLoader.loadInventories(Config.get()));
 
 		new BossHitListener(this);
+		new PlayerTrackingListener(this);
+		new PlayerLifeListener(this);
 	}
 
 	@Override
 	public void onDisable() {
-		// Clear the BossBars from all the players
-		BossBar bar;
-		for (Player p : getServer().getOnlinePlayers()) {
-			bar = BossBar.getBossBar(p);
 
-			if (bar != null) {
-				bar.removePlayer(p);
-			}
-		}
+		// Remove all BossBars
+		BossBar.clearAll();
 
+		// Save and override all the stored ItemInventories
 		ItemInventoryLoader.saveInventories(Config.get(), ItemInventory.getInventories());
 
 		// Save the config file
@@ -81,7 +81,7 @@ public class BossFight extends JavaPlugin {
 			commands.execute(command.getName(), args, sender, sender);
 			return true;
 		} catch (CommandPermissionsException e) {
-			sender.sendMessage("You do not have permission to use this command!");
+			sender.sendMessage(Messages.get("Command-InvalidPermissions"));
 			return false;
 		} catch (MissingNestedCommandException e) {
 			sender.sendMessage(e.getUsage());
@@ -92,9 +92,9 @@ public class BossFight extends JavaPlugin {
 			return false;
 		} catch (WrappedCommandException e) {
 			if (e.getCause() instanceof NumberFormatException) {
-				sender.sendMessage("Wrong argument type. Please supply a number");
+				sender.sendMessage(Messages.get("Command-ExpectedNumber"));
 			} else {
-				sender.sendMessage("An error has occurred. Please use /help to notify a staff member");
+				sender.sendMessage(Messages.get("Command-UnhandledException"));
 				e.printStackTrace();
 			}
 			return false;

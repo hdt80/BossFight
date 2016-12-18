@@ -1,0 +1,22 @@
+# Command error messages
+Command-InvalidPermissions=`cYou lack the permission to use this command.
+Command-ExpectedNumber=`cExpected a number. String received.
+Command-UnhandledException=`cAn unhandled exception has occurred. Please check console.
+Command-PlayersOnly=`4This command can only be used by players.
+
+# Commmand messages
+Command-BossFly=`eFlight: `6{0}
+Command-HealthGreaterThanOne=`cHealth must be greater than 1!
+
+# General usage
+General-Success=`2Success!
+General-Failure=`4Failed!
+
+# Boss fight status messages
+Status-Start=`7Boss fight started. The boss has `3{0} `7hit points.
+Status-Ended=`2Boss defeated!
+Status-Ended-Forced=`eMatch ended.
+
+# Respawn messages
+Respawn-Title=`3You died!
+Respawn-Subtitle=`cRespawning in {0} seconds.

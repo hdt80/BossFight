@@ -47,6 +47,15 @@ public class BossBar {
 	}
 
 	/**
+	 * Clear the bars off of all players
+	 */
+	public static void clearAll() {
+		for (Map.Entry<UUID, BossBar> entry : bars.entrySet()) {
+			entry.getValue().clear();
+		}
+	}
+
+	/**
 	 * Ctor for BossBar
 	 * @param title Title of the BossBar
 	 * @param color Color to use in the BossBar

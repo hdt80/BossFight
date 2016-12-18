@@ -5,6 +5,7 @@ import com.sk89q.minecraft.util.commands.CommandContext;
 import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.minecraft.util.commands.CommandPermissions;
 import me.hpt.ItemStorage.ItemInventory;
+import me.hpt.Messages;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -68,7 +69,7 @@ public class ItemCommands {
 	@CommandPermissions("bossfight.item.get")
 	public static void get(final CommandContext args, final CommandSender sender) throws CommandException {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("Can only be a player to use this!");
+			sender.sendMessage(Messages.get("Command-PlayersOnly"));
 			return;
 		}
 
@@ -92,16 +93,9 @@ public class ItemCommands {
 	)
 	@CommandPermissions("bossfight.item.list")
 	public static void list(final CommandContext args, final CommandSender sender) throws CommandException {
-		if (!(sender instanceof Player)) {
-			sender.sendMessage("Can only be a player to use this!");
-			return;
-		}
-
-		final Player user = (Player) sender;
-
-		user.sendMessage(ChatColor.GOLD + "Inventories: ");
+		sender.sendMessage(ChatColor.GOLD + "Inventories: ");
 		for (Map.Entry<String, ItemInventory> entry : ItemInventory.getInventories().entrySet()) {
-			user.sendMessage(ChatColor.AQUA + entry.getKey());
+			sender.sendMessage(ChatColor.AQUA + entry.getKey());
 		}
 	}
 }

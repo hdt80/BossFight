@@ -139,7 +139,6 @@ public class ItemInventory {
 		for (int i = 0; i < 36; ++i) {
 			items.add(EMPTY_ITEM);
 		}
-		Logger.debug("items size: %d", items.size());
 
 		helmet = null;
 		chestplate = null;

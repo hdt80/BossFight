@@ -2,8 +2,6 @@ package me.hpt;
 
 import com.connorlinfoot.titleapi.TitleAPI;
 import me.hpt.Scoreboard.BetterScoreboard;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.boss.BarColor;
@@ -87,9 +85,9 @@ public class BossFightManager {
 	public static void endFight(boolean forced) {
 
 		// Inform the players the game has ended
-		String endMessage = ChatColor.RED + "Boss defeated!";
+		String endMessage = Messages.get("Status-Ended");
 		if (forced) {
-			endMessage = ChatColor.YELLOW + "Fight ended";
+			endMessage = Messages.get("Status-Ended-Forced");
 		}
 		for (Player p : trackedPlayers) {
 			TitleAPI.clearTitle(p);
@@ -154,8 +152,6 @@ public class BossFightManager {
 			bar.removePlayer(p);
 			trackedPlayers.remove(p);
 			updateBar();
-		} else {
-			Bukkit.broadcastMessage("failed to find");
 		}
 	}
 
